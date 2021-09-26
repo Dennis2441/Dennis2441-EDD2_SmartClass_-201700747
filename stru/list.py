@@ -470,6 +470,15 @@ class matrizx:
 
                         if(mes==mess):
                             MapaRuta = open(r"C:\Users\denni\OneDrive\Desktop\matriz.txt",'w')
+                            MapaRuta.write('digraph {' + "\n")
+                            MapaRuta.write('node [shape=plaintext]' + "\n")
+                            MapaRuta.write('some_node [' + "\n")
+                            MapaRuta.write('label=<' + "\n")
+                            MapaRuta.write('<table border="0" cellborder="1" cellspacing="0">' + "\n")
+                            MapaRuta.write('<tr>' + "\n")
+                            MapaRuta.write('<td>' + "\n")
+                            MapaRuta.write("Matriz" + "\n")
+                            MapaRuta.write('</td>' + "\n")
 
 
                         else:
