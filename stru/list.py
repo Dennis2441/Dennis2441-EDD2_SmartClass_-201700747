@@ -479,6 +479,7 @@ class matrizx:
                             MapaRuta.write('<td>' + "\n")
                             MapaRuta.write("Matriz" + "\n")
                             MapaRuta.write('</td>' + "\n")
+                            MapaRuta.write('</td>' + "\n")
 
 
                         else:
