@@ -3,7 +3,7 @@ from flask_cors import CORS
 from tkinter import filedialog
 from tkinter import Tk
 
-
+import json
 import types
 from xml.dom.minidom import Node
 from datetime import datetime
@@ -23,19 +23,29 @@ CORS(app, resources={r"/*": {"origin": "*"}})
 def getentrada():
     if request.method=="POST":
         hola="hola"
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        print(aList)
+        nombre=aList["tipo"]
+        ruta=aList["path"]
 
-        f = open(r'C:\Users\denni\OneDrive\Desktop\PLY Mejorado\Estudiantes.txt',"r", encoding="utf-8")
-        mensaje = f.read()
-        # print(mensaje)
-        f.close()
-        # parser.parse('¿ Elements ? ¿Element type = "task"?  ¿item Carnet = "201901425" $? ¿$Element? ¿ $Elements ?')
-        parser.parse(mensaje)
+        
+        if(nombre=="estudiante"):
+            f = open(ruta,"r", encoding="utf-8")
+            mensaje = f.read()
+            print(mensaje)
+            f.close()
+            parser.parse('¿ Elements ? ¿Element type = "task"?  ¿item Carnet = "201901425" $? ¿$Element? ¿ $Elements ?')
+            parser.parse(mensaje)
 
-        user_list.getList()
-        print("------------------------")
-        task_list.getList()
+            user_list.getList()
+            print("------------------------")
+            task_list.getList()
 
-        hola=user_list.getver()
+            hola=user_list.getver()
+        elif(nombre=="curso"):
+            nombre=""
+        
 
         return Response(hola,content_type='application/x-www-form-urlencoded')
     elif request.method=="GET":

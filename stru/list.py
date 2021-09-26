@@ -1,7 +1,10 @@
 from stru.Nodos import  NodeS
 from stru.nodoav import nodeavl
+import os
+import webbrowser
 hola=""
-
+cc=0
+ff=0
 listaestudiante=[]
 
 class noode:
@@ -321,4 +324,162 @@ class avl:
         right=self.get_height(cur_node.right_child)
         return cur_node.left_child if left>=right else cur_node.right_child
 
+class Nodo1(): #Nodo que guarda las cantidades de combustible
+    def __init__(self,fila,columna,carnet,nombre,descripcion,materia,fecha,hora,estado):
+        self.carnet=carnet
+        self.nombre=nombre
+        self.descripcion=descripcion
+        self.materia=materia
+        self.fecha=fecha
+        self.hora=hora
+        self.fecha=fecha
+        self.fila=fila
+        self.estado=estado
+        self.derecha=None
+        self.izquierda=None
+        self.abajo=None
+        self.arriba=None
+class nodoencabezado:
+    def __init__(self,id):
+        self.id=id
+        self.siguiente=None
+        self.anterior=None
+        self.acceso=None
+class listaencabezado:
+    def __init__(self,primero=None):
+        self.primero=primero
+    def eliminarp(self):
+        if(self.primero==None):
+            print("vacio")
+        
+        if self.primero.siguiente==None:
+                self.primero=None
+                return
+        
+        self.primero=self.primero.siguiente
+        self.primero.anterior=None
+    def eliminar(self,id):
+        if(self.primero==None):
+            print("vacio")
+        else:
+            if(self.primero==id):
+                print(self.primero.id)
+                self.eliminarp()
+                return
 
+    def setencabezadp(self,nuevo):
+        if (self.primero==None):
+            self.primero=nuevo
+        elif(nuevo.id<self.primero.id):
+            nuevo.siguiente=self.primero
+            self.primero.anterior=nuevo
+            self.primero=nuevo
+        else:
+            actual=self.primero
+            while actual.siguiente !=None:
+                if(nuevo.id<self.primero.id):
+                    nuevo.siguiente=actual.siguiente
+                    actual.siguiente.anterior=nuevo
+                    nuevo.anterior=actual
+                    actual.siguiente=nuevo
+                    break
+                actual=actual.siguiente
+            if(actual.siguiente==None):
+                actual.siguiente=nuevo
+                nuevo.anterior=actual
+    def getencabezado(self,id):
+        actual=self.primero
+        while actual !=None:
+            if(actual.id==id):
+                return actual
+            actual=actual.siguiente
+        return None
+
+class matrizx:
+    
+    def __init__(self):
+        self.efilas=listaencabezado()
+        self.ecolumnas=listaencabezado()
+    def insertar(self,fila,columna,carnet,nombre,descripcion,materia,fecha,hora,estado):
+        cc=cc+1
+        ff=ff+1
+        nuevo=Nodo1(fila,columna,carnet,nombre,descripcion,materia,fecha,hora,estado)
+        ecolumna=self.ecolumnas.getencabezado(columna)
+        print(ecolumna)
+        if ecolumna==None:
+            ecolumna=nodoencabezado(columna)
+            ecolumna.acceso=nuevo
+            self.ecolumnas.setencabezadp(ecolumna)
+           
+        else:
+            if (nuevo.fila < ecolumna.acceso.fila):
+                nuevo.abajo=ecolumna.acceso
+                ecolumna.acceso.arriba=nuevo
+                ecolumna.acceso=nuevo
+            else:
+                actual=ecolumna.acceso
+                while actual.abajo !=None:
+                    if nuevo.fila< actual.abajo.fila:
+                        nuevo.abajo=actual.abajo
+                        actual.abajo.arriba=nuevo
+                        nuevo.arriba=actual
+                        actual.abajo=nuevo
+                        break
+                    actual=actual.abajo
+                if(actual.abajo==None):
+                    actual.abajo=nuevo
+                    nuevo.arriba=actual
+        #insercion encabezado por filas
+        efila= self.efilas.getencabezado(fila)
+        if efila==None:
+            efila=nodoencabezado(fila)
+            efila.acceso=nuevo
+            self.efilas.setencabezadp(efila)
+        else:
+            if (nuevo.columna < efila.acceso.columna):
+                nuevo.derecha=efila.acceso
+                efila.acceso.izquierda=nuevo
+                efila.acceso=nuevo
+            else:
+                actual=efila.acceso
+                while actual.derecha !=None:
+                    if nuevo.columna< actual.derecha.columna:
+                        nuevo.derecha=actual.derecha
+                        actual.derecha.izquierda=nuevo
+                        nuevo.izquierda=actual
+                        actual.derecha=nuevo
+                        break
+                    actual=actual.derecha
+                if(actual.derecha==None):
+                    actual.derecha=nuevo
+                    nuevo.izquierda=actual
+
+    def buscar1(self,carnet,year,mes):
+        ecolumna=self.ecolumnas.primero
+        ver=False
+        quotes='"'
+        while ecolumna !=None:
+            actual=ecolumna.acceso
+            while actual !=None:
+                if actual.carnet==carnet:
+                    
+                    strin=str(actual.fecha)
+                    mess=strin.split("/")[1]
+                    yearr=strin.split("/")[2]
+                    if(year==yearr):
+
+                        if(mes==mess):
+                            MapaRuta = open(r"C:\Users\denni\OneDrive\Desktop\matriz.txt",'w')
+
+
+                        else:
+                            ver=False
+                    else:
+                        ver=False
+                actual=actual.abajo
+            if(ver==False):
+                return "ver"
+            
+
+            ecolumna=ecolumna.siguiente
+        
