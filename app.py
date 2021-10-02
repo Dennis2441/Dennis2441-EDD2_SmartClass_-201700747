@@ -45,7 +45,8 @@ def getentrada():
             hola=user_list.getver()
         elif(nombre=="curso"):
             nombre=""
-        
+
+            
 
         return Response(hola,content_type='application/x-www-form-urlencoded')
     elif request.method=="GET":
