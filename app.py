@@ -67,7 +67,7 @@ def getentrada():
 @app.route('/reporte', methods=['POST','GET'])
 def getreporte():
     if request.method=="GET":
-        hola="Carga Completa"
+        hola="Buscar la Imagen"
         jsonStr= request.data.decode('utf-8')
         aList = json.loads(jsonStr)
         print(aList)
@@ -108,6 +108,7 @@ def getreporte():
 
 @app.route('/estudiante', methods=['POST','GET','DELETE','PUT'])
 def getestudiante():
+    hola=""
     if request.method=="POST":
         jsonStr= request.data.decode('utf-8')
         aList = json.loads(jsonStr)
@@ -122,12 +123,37 @@ def getestudiante():
 
         user_list.insertValue(carnet,DPI,nombre,carrera,password,creditos,edad,correo,"","","","","","user")
         av.insert(carnet,nombre,carrera,DPI)
+        hola="Hecho"
+        return Response(hola,content_type='application/x-www-form-urlencoded')
     elif(request.method=="DELETE"):
         jsonStr= request.data.decode('utf-8')
         av.delete_value(jsonStr)
         aList = json.loads(jsonStr)
         carnet=['carnet']
         av.delete_value(carnet)
+        hola="Hecho"
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif(request.method=="PUT"):
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=['carnet']
+        DPI=['DPI']
+        nombre=str['nombre']
+        carrera=str['carrera']
+        correo=['correo']
+        password=['password']
+        creditos=str(['creditos'])
+        edad=str(['edad'])
+        av.search(carnet,DPI,nombre,carrera,password,creditos,edad,correo)
+        hola="Hecho"
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif(request.method=="GET"):
+        jsonStr= request.data.decode('utf-8')
+        av.delete_value(jsonStr)
+        aList = json.loads(jsonStr)
+        carnet=['carnet']
+        av.search2(carnet)
+    
 
 
 

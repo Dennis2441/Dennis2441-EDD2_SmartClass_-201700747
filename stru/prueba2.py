@@ -284,20 +284,25 @@ class avl:
         if node_parent!=None:
             node_parent.height=1+max(self.get_height(node_parent.left_child),self.get_height(node_parent.right_child))
             self._inspect_deletion(node_parent)
-    def search(self,value):
+    def search(self,value,nombre,carrera,dpi):
         if self.root != None:
-            return self._search(value,self.root)
+            return self._search(value,nombre,carrera,dpi,self.root)
         else:
             return False
     
-    def _search(self, value, cur_node):
+    def _search(self, value,nombre,carrera,dpi, cur_node):
         if value == cur_node.value:
+            cur_node.nombre=nombre
+            cur_node.carrera=carrera
+            cur_node.dpi=dpi
+            
             return True
         elif value<cur_node.value and cur_node.left_child!=None:
-            return self._search(value,cur_node.left_child)
+            return self._search(value,nombre,carrera,dpi,cur_node.left_child)
         elif value>cur_node.value and cur_node.right_child!=None:
-            return self._search(value,cur_node.right_child)
+            return self._search(value,nombre,carrera,dpi,cur_node.right_child)
         return False
+
     
     def _inspect_insertion(self,cur_node,path=[]):
         if cur_node.parent==None: return
@@ -385,15 +390,31 @@ class avl:
         return cur_node.left_child if left>=right else cur_node.right_child
 
 
+    def search2(self,value):
+        if self.root != None:
+            return self._search2(value,self.root)
+        else:
+            return False
+    
+    def _search2(self, value, cur_node):
+        if value == cur_node.value:
+           # ho=" Carnet:"+cur_node.value+ "\n Nombre:"+cur_node.nombre+ "\n Carrera:"+cur_node.carrera+ "\n DPI:"+cur_node.dpi+ "\n Correo:"+cur_node.correo+ "\n Password:"+cur_node.Password+ "\n Creditos:"+cur_node.creditos+ "\n Edad:"+cur_node.edad
+            ho=" Carnet:"+cur_node.value+ "\n Nombre:"+cur_node.nombre+ "\n Carrera:"+cur_node.carrera+ "\n DPI:"+cur_node.dpi
+            return ho
+        elif value<cur_node.value and cur_node.left_child!=None:
+            return self._search2(value,cur_node.left_child)
+        elif value>cur_node.value and cur_node.right_child!=None:
+            return self._search2(value,cur_node.right_child)
+        return False
+
 if __name__=='__main__':
     hola=avl()
     hola.insert("20","Hola","inge","2332")
-    hola.insert("10","fe","hja","2332")
-    hola.insert("50","fe","hja","2332")
-    hola.insert("5","fe","hja","2332")
-    hola.insert("40","fe","hja","2332")
-    hola.insert("4","fe","hja","2332")
-    hola.insert("8","fe","hja","2332")
-    hola.insert("11","fe","hja","2332")
+    hola.insert("22","Hola","inge","2332")
+    hola.insert("23","Hola","inge","2332")
+    hola.insert("24","Hola","inge","2332")
     print(hola.height())
     print(hola.imprimir2())
+    hola.search("20","pelea","inge","2332")
+    print(hola.imprimir2())
+    print(hola.search2("20"))
