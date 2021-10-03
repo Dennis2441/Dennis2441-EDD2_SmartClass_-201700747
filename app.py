@@ -106,7 +106,7 @@ def getreporte():
         hola="hola"
         return Response(hola,content_type='application/x-www-form-urlencoded')
 
-@app.route('/estudiante', methods=['POST','GET'])
+@app.route('/estudiante', methods=['POST','GET','DELETE','PUT'])
 def getestudiante():
     if request.method=="POST":
         jsonStr= request.data.decode('utf-8')
@@ -122,6 +122,13 @@ def getestudiante():
 
         user_list.insertValue(carnet,DPI,nombre,carrera,password,creditos,edad,correo,"","","","","","user")
         av.insert(carnet,nombre,carrera,DPI)
+    elif(request.method=="DELETE"):
+        jsonStr= request.data.decode('utf-8')
+        av.delete_value(jsonStr)
+        aList = json.loads(jsonStr)
+        carnet=['carnet']
+        av.delete_value(carnet)
+
 
 
 if __name__=='__main__':

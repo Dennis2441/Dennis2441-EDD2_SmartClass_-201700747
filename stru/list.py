@@ -656,29 +656,29 @@ class avl:
         return content
 
 
-    def insert(self, value,nombre,carrera,dpi):
+    def insert(self, value,nombre,carrera,dpi,correo,password,creditos,edad):
         if self.root == None:
-            self.root = nodeavl(value,nombre,carrera,dpi)
+            self.root = nodeavl(value,nombre,carrera,dpi,correo,password,creditos,edad)
         else:
-            self._insert(value, nombre,carrera,dpi,self.root)
+            self._insert(value, nombre,carrera,dpi,correo,password,creditos,edad,self.root)
 
-    def _insert(self, value,nombre,carrera,dpi, cur_node):
+    def _insert(self, value,nombre,carrera,dpi,correo,password,creditos,edad, cur_node):
         if value < cur_node.value:
             if cur_node.left_child == None:
-                cur_node.left_child = nodeavl(value,nombre,carrera,dpi)
+                cur_node.left_child = nodeavl(value,nombre,carrera,dpi,correo,password,creditos,edad)
                 cur_node.left_child.parent = cur_node
                 self._inspect_insertion(cur_node.left_child)
             else:
-                self._insert(value,nombre,carrera,dpi, cur_node.left_child)
+                self._insert(value,nombre,carrera,dpi,correo,password,creditos,edad, cur_node.left_child)
         elif value > cur_node.value:
             if cur_node.right_child == None:
-                cur_node.right_child = nodeavl(value,nombre,carrera,dpi)
+                cur_node.right_child = nodeavl(value,nombre,carrera,dpi,correo,password,creditos,edad)
 
                 
                 cur_node.right_child.parent = cur_node
                 self._inspect_insertion(cur_node.right_child)
             else:
-                self._insert(value,nombre,carrera,dpi, cur_node.right_child)
+                self._insert(value,nombre,carrera,dpi,correo,password,creditos,edad, cur_node.right_child)
         else:
             print('El valor ya existe en el arbol')
 
@@ -913,7 +913,7 @@ class List:
             hola=hola+aux.Carnet + " - " + aux.Nombre + "-" + aux.DPI + "-" + aux.Descripcion + "-" + aux.Correo+"\n"
             if(aux.tipo=="user"):
                 listaestudiante.append(noode(aux.Carnet,aux.DPI,aux.Nombre,aux.Carrera,aux.Password,aux.Creditos,aux.Edad,aux.Correo))
-                av.insert(aux.Carnet,aux.Nombre,aux.Carrera,aux.DPI)
+                av.insert(aux.Carnet,aux.Nombre,aux.Carrera,aux.DPI,aux.Correo,aux.Password,aux.Creditos,aux.Edad)
                #value,nombre,carrera,dpi
             else:
                 matiz.insertar(aux.Carnet,aux.Nombre,aux.Descripcion,aux.Materia,aux.Fecha,aux.Hora,aux.Estado)
