@@ -127,7 +127,7 @@ def getestudiante():
         return Response(hola,content_type='application/x-www-form-urlencoded')
     elif(request.method=="DELETE"):
         jsonStr= request.data.decode('utf-8')
-        av.delete_value(jsonStr)
+        
         aList = json.loads(jsonStr)
         carnet=['carnet']
         av.delete_value(carnet)
@@ -149,7 +149,7 @@ def getestudiante():
         return Response(hola,content_type='application/x-www-form-urlencoded')
     elif(request.method=="GET"):
         jsonStr= request.data.decode('utf-8')
-        av.delete_value(jsonStr)
+        
         aList = json.loads(jsonStr)
         carnet=['carnet']
         av.search2(carnet)
