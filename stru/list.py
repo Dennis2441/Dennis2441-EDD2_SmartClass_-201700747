@@ -87,6 +87,77 @@ class listaencabezado:
             actual=actual.siguiente
         return None
 
+class Nodo1(): #Nodo que guarda las cantidades de combustible
+    def __init__(self,fila,columna,carnet,nombre,descripcion,materia,fecha,hora,estado):
+        self.carnet=carnet
+        self.nombre=nombre
+        self.descripcion=descripcion
+        self.materia=materia
+        self.fecha=fecha
+        self.hora=hora
+        self.fecha=fecha
+        self.fila=fila
+        self.estado=estado
+        self.derecha=None
+        self.izquierda=None
+        self.abajo=None
+        self.arriba=None
+class nodoencabezado:
+    def __init__(self,id):
+        self.id=id
+        self.siguiente=None
+        self.anterior=None
+        self.acceso=None
+class listaencabezado:
+    def __init__(self,primero=None):
+        self.primero=primero
+    def eliminarp(self):
+        if(self.primero==None):
+            print("vacio")
+        
+        if self.primero.siguiente==None:
+                self.primero=None
+                return
+        
+        self.primero=self.primero.siguiente
+        self.primero.anterior=None
+    def eliminar(self,id):
+        if(self.primero==None):
+            print("vacio")
+        else:
+            if(self.primero==id):
+                print(self.primero.id)
+                self.eliminarp()
+                return
+
+    def setencabezadp(self,nuevo):
+        if (self.primero==None):
+            self.primero=nuevo
+        elif(nuevo.id<self.primero.id):
+            nuevo.siguiente=self.primero
+            self.primero.anterior=nuevo
+            self.primero=nuevo
+        else:
+            actual=self.primero
+            while actual.siguiente !=None:
+                if(nuevo.id<self.primero.id):
+                    nuevo.siguiente=actual.siguiente
+                    actual.siguiente.anterior=nuevo
+                    nuevo.anterior=actual
+                    actual.siguiente=nuevo
+                    break
+                actual=actual.siguiente
+            if(actual.siguiente==None):
+                actual.siguiente=nuevo
+                nuevo.anterior=actual
+    def getencabezado(self,id):
+        actual=self.primero
+        while actual !=None:
+            if(actual.id==id):
+                return actual
+            actual=actual.siguiente
+        return None
+
 class matrizx:
     
     
@@ -285,7 +356,7 @@ class matrizx:
                     listahora.append(int(x))
             nfila=len(listahora)
             ncolumna=len(listadia)                
-                            
+ 
     def imprimir2(self,dia,carnet,year,mes,hora):
         global listadia
         global listahora
@@ -349,7 +420,8 @@ class matrizx:
             MapaRuta.close()
             os.system("dot -Tsvg "r"C:\Users\denni\OneDrive\Desktop\listatarea.txt -o "r"C:\Users\denni\OneDrive\Desktop\listatarea.svg")
             os.system("dot -Tjpg "r"C:\Users\denni\OneDrive\Desktop\listatarea.txt -o "r"C:\Users\denni\OneDrive\Desktop\listatarea.jpg") 
-            return "Okey"                         
+            return "Okey"                          
+                            
 
                     
 
@@ -410,10 +482,13 @@ class matrizx:
                 for i in listadia:
                     self.buscar2(i,carnet,year,mes)
 
+
+       
+            
 class avl:
     def __init__(self):
         self.root = None
-
+    
     def __repr__(self):
         if self.root == None: return ''
         content='\n'
@@ -438,13 +513,14 @@ class avl:
                     continue
                 if n.value != None:
                     buf=' '*int((5-len(str(n.value)))/2)
-                    cur_row+='%s%s%s'%(buf,str(n.value),buf)+sep
+                    cur_row+='%s%s%s'%(buf,str(n.value+'*'),buf)+sep
+                    
                 else:
                     cur_row+=' '*5+sep
-
+                                                                                    
                 if n.left_child != None:
                     next_nodes.append(n.left_child)
-                    next_row+=' /'+sep
+                    next_row+=' / '+sep
                 else:
                     next_row+='  '+sep
                     next_nodes.append(None)
@@ -460,11 +536,131 @@ class avl:
             sep=' '*int(len(sep)/2)
         return content
 
+
+    def imprimir2(self):
+        if self.root == None: return ''
+        content='\n'
+        cur_nodes = [self.root]
+        co=0
+        izquierdo=0
+        derecho=""
+        derechonombre=""
+        derechocarrera=""
+        anterior=0
+        siguienteiz=""
+        siguientede=""
+        actual=""
+        cur_height = self.root.height
+        sep=' '*(2**(cur_height-1))
+        MapaRuta = open(r"C:\Users\denni\OneDrive\Desktop\avl.txt",'w')
+        MapaRuta.write('digraph {' + "\n")
+        MapaRuta.write('rankdir=TB;' + "\n")
+        MapaRuta.write('node [shape = record, style=filled, fillcolor=seashell2];' + "\n")
+        while True:
+            cur_height += -1
+            if len(cur_nodes) == 0: break
+            cur_row=' '
+            next_row=''
+            next_nodes = []
+            
+
+            if all(n is None for n in cur_nodes):
+                break
+
+            for n in cur_nodes:
+               
+                     
+                if n == None:
+                    cur_row+='   '+sep
+                    next_row+='   '+sep
+                    next_nodes.extend([None, None])
+                    continue
+                if n.value != None:
+                    buf=' '*int((5-len(str(n.value)))/2)
+                    cur_row+='%s%s%s'%(buf,str(n.value+'*'),buf)+sep
+                    co=co+1
+                    if(co==1):
+                        MapaRuta.write("nodo"+str(n.value)+"[label=\"<C0>|Carnet:"+n.value+"|Nombre:"+n.nombre+"|Descripcion:"+n.carrera+"|<C1>\"];"+ "\n")
+                        MapaRuta.write("nodo"+str(n.value)+ "\n")
+                        actual="nodo"+str(n.value)
+                    else:
+                        MapaRuta.write("nodo"+str(n.value)+"[label=\"<C0>|Carnet:"+n.value+"|Nombre:"+n.nombre+"|Descripcion:"+n.carrera+"|<C1>\"];"+ "\n")
+                        actual="nodo"+str(n.value)
+                else:
+                    cur_row+=' '*5+sep
+                                                                                    
+                if n.left_child != None:
+                    next_nodes.append(n.left_child)
+                    
+                    next_row+=' / '+sep
+                    if(co==1):
+                        MapaRuta.write("nodo"+str(n.left_child.value)+"[label=\"<C0>|Carnet:"+n.left_child.value+"|Nombre:"+n.left_child.nombre+"|Descripcion:"+n.left_child.carrera+"|<C1>\"];"+ "\n")
+                        siguienteiz="nodo"+str(n.left_child.value)  
+                    else:   
+                        MapaRuta.write("nodo"+str(n.left_child.value)+"[label=\"<C0>|Carnet:"+n.left_child.value+"|Nombre:"+n.left_child.nombre+"|Descripcion:"+n.left_child.carrera+"|<C1>\"];"+ "\n")
+                        siguienteiz="nodo"+str(n.left_child.value)                     
+                else:
+                    next_row+='  '+sep
+                    next_nodes.append(None)
+                if n.right_child!=None: 
+                    next_nodes.append(n.right_child)
+                    next_row+='\ '+sep
+                    if(co==1):
+                        derecho=n.right_child.value
+                        derechonombre="nodo"+str(n.value)
+                        
+                    else:
+                        MapaRuta.write("nodo"+str(n.right_child.value)+"[label=\"<C0>|"+n.right_child.value+"|"+n.right_child.nombre+"|"+n.right_child.carrera+"|<C1>\"];"+ "\n")
+                        siguientede="nodo"+str(n.right_child.value)  
+                else:
+                    next_row+='  '+sep
+                    next_nodes.append(None)
+                if(co==1):
+                    h=""
+                    if(siguienteiz==""):
+                        nada=""
+                    else:
+                        MapaRuta.write(actual+":<C0>->"+siguienteiz+ "\n")
+                else:
+
+                    if(derecho==n.value):
+                        MapaRuta.write(derechonombre+":<C1>->"+actual+ "\n")
+                        derechonombre=actual
+                        print(n.parent.value)
+                    elif(n.parent.value==derecho):
+                        MapaRuta.write(derechonombre+":<C1>->"+actual+ "\n")
+                    elif(n.right_child==None and n.left_child==None):
+                        po=""
+                    
+                    else:
+                        if(siguienteiz==""):
+                            nada=""
+                        else:
+                            MapaRuta.write(actual+":<C0>->"+siguienteiz+ "\n")
+                        
+                        if(siguientede==""):
+                            nada=""
+                        else:
+                            MapaRuta.write(actual+":<C1>->"+siguientede+ "\n")
+
+                siguientede=""
+                siguienteiz=""
+
+            content+=(cur_height*'   '+cur_row+'\n'+cur_height*'   '+next_row+'\n')
+            cur_nodes = next_nodes
+            sep=' '*int(len(sep)/2)
+        MapaRuta.write('}')   
+        MapaRuta.close()
+        os.system("dot -Tsvg "r"C:\Users\denni\OneDrive\Desktop\avl.txt -o "r"C:\Users\denni\OneDrive\Desktop\avl.svg")
+        os.system("dot -Tjpg "r"C:\Users\denni\OneDrive\Desktop\avl.txt -o "r"C:\Users\denni\OneDrive\Desktop\avl.jpg") 
+        return content
+
+
     def insert(self, value,nombre,carrera,dpi):
         if self.root == None:
             self.root = nodeavl(value,nombre,carrera,dpi)
         else:
-            self._insert(value, self.root)
+            self._insert(value, nombre,carrera,dpi,self.root)
 
     def _insert(self, value,nombre,carrera,dpi, cur_node):
         if value < cur_node.value:
@@ -473,7 +669,7 @@ class avl:
                 cur_node.left_child.parent = cur_node
                 self._inspect_insertion(cur_node.left_child)
             else:
-                self._insert(value, cur_node.left_child)
+                self._insert(value,nombre,carrera,dpi, cur_node.left_child)
         elif value > cur_node.value:
             if cur_node.right_child == None:
                 cur_node.right_child = nodeavl(value,nombre,carrera,dpi)
@@ -482,7 +678,7 @@ class avl:
                 cur_node.right_child.parent = cur_node
                 self._inspect_insertion(cur_node.right_child)
             else:
-                self._insert(value, cur_node.right_child)
+                self._insert(value,nombre,carrera,dpi, cur_node.right_child)
         else:
             print('El valor ya existe en el arbol')
 
@@ -672,8 +868,10 @@ class avl:
         right=self.get_height(cur_node.right_child)
         return cur_node.left_child if left>=right else cur_node.right_child
 
+
 matiz=matrizx()
 av=avl()
+recordatorio=matrizx()
 class noode:
     def __init__(self, carnet, dpi, nombre, carrera, password, creditos, edad, correo):
         self.Carnet = carnet
@@ -715,9 +913,11 @@ class List:
             hola=hola+aux.Carnet + " - " + aux.Nombre + "-" + aux.DPI + "-" + aux.Descripcion + "-" + aux.Correo+"\n"
             if(aux.tipo=="user"):
                 listaestudiante.append(noode(aux.Carnet,aux.DPI,aux.Nombre,aux.Carrera,aux.Password,aux.Creditos,aux.Edad,aux.Correo))
-                avl.insert(aux.Carnet,aux.Nombre,aux.Carrera,aux.DPI)
+                av.insert(aux.Carnet,aux.Nombre,aux.Carrera,aux.DPI)
+               #value,nombre,carrera,dpi
             else:
                 matiz.insertar(aux.Carnet,aux.Nombre,aux.Descripcion,aux.Materia,aux.Fecha,aux.Hora,aux.Estado)
+                
             aux = aux.Next
     
 

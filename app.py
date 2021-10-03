@@ -15,14 +15,15 @@ import re
 
 from analizador.Syntactic import parser
 from analizador.Syntactic import user_list, task_list
-
+from stru.list import av
+from stru.list import matiz
 app= Flask(__name__)
 CORS(app, resources={r"/*": {"origin": "*"}})
 
 @app.route('/entrada', methods=['POST','GET'])
 def getentrada():
     if request.method=="POST":
-        hola="hola"
+        hola="Carga Completa"
         jsonStr= request.data.decode('utf-8')
         aList = json.loads(jsonStr)
         print(aList)
@@ -41,10 +42,19 @@ def getentrada():
             user_list.getList()
             print("------------------------")
             task_list.getList()
-
-            hola=user_list.getver()
+            
+          #  av.imprimir2()
+            
+            user_list.getver()
+            
         elif(nombre=="curso"):
-            nombre=""
+            for p in aList['Cursos']:
+                codigo=['Codigo']
+                name=['Nombre']
+                credito=str(p['Creditos'])
+                pre=str(p['Prerequisitos'])
+                obligatorio=str(p['Obligatorio'])
+                
 
             
 
@@ -54,7 +64,64 @@ def getentrada():
         return Response(hola,content_type='application/x-www-form-urlencoded')
 
 
+@app.route('/reporte', methods=['POST','GET'])
+def getreporte():
+    if request.method=="GET":
+        hola="Carga Completa"
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        print(aList)
+        nombre=aList["tipo"]
+        if(nombre==0):
+           hola="Buscar la Imagen"
+           av.imprimir2()
+        elif(nombre==1):
+            carnet=aList["carnet"]
+            year=aList["año"]
+            mes=aList["mes"]
+            matiz.buscar1(carnet,year,mes)
+            matiz.imprimir()
+        elif(nombre==2):
+            carnet=aList["carnet"]
+            year=aList["año"]
+            mes=aList["mes"]
+            dia=aList["dia"]
+            hora=aList["hora"]
+            matiz.buscar1(carnet,year,mes)
+            matiz.imprimir2(dia,carnet,year,mes,hora)
+        elif(nombre==3):
+            ho=""
+        elif(nombre==4):
+            ho=""
+        
+        #ruta=aList["path"]
 
+        
+        
+
+            
+
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif request.method=="GET":
+        hola="hola"
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+
+@app.route('/estudiante', methods=['POST','GET'])
+def getestudiante():
+    if request.method=="POST":
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=['carnet']
+        DPI=['DPI']
+        nombre=str['nombre']
+        carrera=str['carrera']
+        correo=['correo']
+        password=['password']
+        creditos=str(['creditos'])
+        edad=str(['edad'])
+
+        user_list.insertValue(carnet,DPI,nombre,carrera,password,creditos,edad,correo,"","","","","","user")
+        av.insert(carnet,nombre,carrera,DPI)
 
 
 if __name__=='__main__':

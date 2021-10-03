@@ -1,10 +1,10 @@
 
-
+import os
 from nodoav import nodeavl
 class avl:
     def __init__(self):
         self.root = None
-
+    
     def __repr__(self):
         if self.root == None: return ''
         content='\n'
@@ -29,13 +29,14 @@ class avl:
                     continue
                 if n.value != None:
                     buf=' '*int((5-len(str(n.value)))/2)
-                    cur_row+='%s%s%s'%(buf,str(n.value),buf)+sep
+                    cur_row+='%s%s%s'%(buf,str(n.value+'*'),buf)+sep
+                    
                 else:
                     cur_row+=' '*5+sep
-
+                                                                                    
                 if n.left_child != None:
                     next_nodes.append(n.left_child)
-                    next_row+=' /'+sep
+                    next_row+=' / '+sep
                 else:
                     next_row+='  '+sep
                     next_nodes.append(None)
@@ -51,6 +52,126 @@ class avl:
             sep=' '*int(len(sep)/2)
         return content
 
+
+    def imprimir2(self):
+        if self.root == None: return ''
+        content='\n'
+        cur_nodes = [self.root]
+        co=0
+        izquierdo=0
+        derecho=""
+        derechonombre=""
+        derechocarrera=""
+        anterior=0
+        siguienteiz=""
+        siguientede=""
+        actual=""
+        cur_height = self.root.height
+        sep=' '*(2**(cur_height-1))
+        MapaRuta = open(r"C:\Users\denni\OneDrive\Desktop\avl.txt",'w')
+        MapaRuta.write('digraph {' + "\n")
+        MapaRuta.write('rankdir=TB;' + "\n")
+        MapaRuta.write('node [shape = record, style=filled, fillcolor=seashell2];' + "\n")
+        while True:
+            cur_height += -1
+            if len(cur_nodes) == 0: break
+            cur_row=' '
+            next_row=''
+            next_nodes = []
+            
+
+            if all(n is None for n in cur_nodes):
+                break
+
+            for n in cur_nodes:
+               
+                     
+                if n == None:
+                    cur_row+='   '+sep
+                    next_row+='   '+sep
+                    next_nodes.extend([None, None])
+                    continue
+                if n.value != None:
+                    buf=' '*int((5-len(str(n.value)))/2)
+                    cur_row+='%s%s%s'%(buf,str(n.value+'*'),buf)+sep
+                    co=co+1
+                    if(co==1):
+                        MapaRuta.write("nodo"+str(n.value)+"[label=\"<C0>|Carnet:"+n.value+"|Nombre:"+n.nombre+"|Descripcion:"+n.carrera+"|<C1>\"];"+ "\n")
+                        MapaRuta.write("nodo"+str(n.value)+ "\n")
+                        actual="nodo"+str(n.value)
+                    else:
+                        MapaRuta.write("nodo"+str(n.value)+"[label=\"<C0>|Carnet:"+n.value+"|Nombre:"+n.nombre+"|Descripcion:"+n.carrera+"|<C1>\"];"+ "\n")
+                        actual="nodo"+str(n.value)
+                else:
+                    cur_row+=' '*5+sep
+                                                                                    
+                if n.left_child != None:
+                    next_nodes.append(n.left_child)
+                    
+                    next_row+=' / '+sep
+                    if(co==1):
+                        MapaRuta.write("nodo"+str(n.left_child.value)+"[label=\"<C0>|Carnet:"+n.left_child.value+"|Nombre:"+n.left_child.nombre+"|Descripcion:"+n.left_child.carrera+"|<C1>\"];"+ "\n")
+                        siguienteiz="nodo"+str(n.left_child.value)  
+                    else:   
+                        MapaRuta.write("nodo"+str(n.left_child.value)+"[label=\"<C0>|Carnet:"+n.left_child.value+"|Nombre:"+n.left_child.nombre+"|Descripcion:"+n.left_child.carrera+"|<C1>\"];"+ "\n")
+                        siguienteiz="nodo"+str(n.left_child.value)                     
+                else:
+                    next_row+='  '+sep
+                    next_nodes.append(None)
+                if n.right_child!=None: 
+                    next_nodes.append(n.right_child)
+                    next_row+='\ '+sep
+                    if(co==1):
+                        derecho=n.right_child.value
+                        derechonombre="nodo"+str(n.value)
+                        
+                    else:
+                        MapaRuta.write("nodo"+str(n.right_child.value)+"[label=\"<C0>|"+n.right_child.value+"|"+n.right_child.nombre+"|"+n.right_child.carrera+"|<C1>\"];"+ "\n")
+                        siguientede="nodo"+str(n.right_child.value)  
+                else:
+                    next_row+='  '+sep
+                    next_nodes.append(None)
+                if(co==1):
+                    h=""
+                    if(siguienteiz==""):
+                        nada=""
+                    else:
+                        MapaRuta.write(actual+":<C0>->"+siguienteiz+ "\n")
+                else:
+
+                    if(derecho==n.value):
+                        MapaRuta.write(derechonombre+":<C1>->"+actual+ "\n")
+                        derechonombre=actual
+                        print(n.parent.value)
+                    elif(n.parent.value==derecho):
+                        MapaRuta.write(derechonombre+":<C1>->"+actual+ "\n")
+                    elif(n.right_child==None and n.left_child==None):
+                        po=""
+                    
+                    else:
+                        if(siguienteiz==""):
+                            nada=""
+                        else:
+                            MapaRuta.write(actual+":<C0>->"+siguienteiz+ "\n")
+                        
+                        if(siguientede==""):
+                            nada=""
+                        else:
+                            MapaRuta.write(actual+":<C1>->"+siguientede+ "\n")
+
+                siguientede=""
+                siguienteiz=""
+
+            content+=(cur_height*'   '+cur_row+'\n'+cur_height*'   '+next_row+'\n')
+            cur_nodes = next_nodes
+            sep=' '*int(len(sep)/2)
+        MapaRuta.write('}')   
+        MapaRuta.close()
+        os.system("dot -Tsvg "r"C:\Users\denni\OneDrive\Desktop\avl.txt -o "r"C:\Users\denni\OneDrive\Desktop\avl.svg")
+        os.system("dot -Tjpg "r"C:\Users\denni\OneDrive\Desktop\avl.txt -o "r"C:\Users\denni\OneDrive\Desktop\avl.jpg") 
+        return content
+
+
     def insert(self, value,nombre,carrera,dpi):
         if self.root == None:
             self.root = nodeavl(value,nombre,carrera,dpi)
@@ -64,7 +185,7 @@ class avl:
                 cur_node.left_child.parent = cur_node
                 self._inspect_insertion(cur_node.left_child)
             else:
-                self._insert(value, cur_node.left_child)
+                self._insert(value,nombre,carrera,dpi, cur_node.left_child)
         elif value > cur_node.value:
             if cur_node.right_child == None:
                 cur_node.right_child = nodeavl(value,nombre,carrera,dpi)
@@ -73,7 +194,7 @@ class avl:
                 cur_node.right_child.parent = cur_node
                 self._inspect_insertion(cur_node.right_child)
             else:
-                self._insert(value, cur_node.right_child)
+                self._insert(value,nombre,carrera,dpi, cur_node.right_child)
         else:
             print('El valor ya existe en el arbol')
 
@@ -262,9 +383,17 @@ class avl:
         left=self.get_height(cur_node.left_child)
         right=self.get_height(cur_node.right_child)
         return cur_node.left_child if left>=right else cur_node.right_child
+
+
 if __name__=='__main__':
     hola=avl()
     hola.insert("20","Hola","inge","2332")
     hola.insert("10","fe","hja","2332")
-   
-    hola.print_tree()
+    hola.insert("50","fe","hja","2332")
+    hola.insert("5","fe","hja","2332")
+    hola.insert("40","fe","hja","2332")
+    hola.insert("4","fe","hja","2332")
+    hola.insert("8","fe","hja","2332")
+    hola.insert("11","fe","hja","2332")
+    print(hola.height())
+    print(hola.imprimir2())
