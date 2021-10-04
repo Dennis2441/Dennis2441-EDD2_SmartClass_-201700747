@@ -165,6 +165,18 @@ class matrizx:
         
         self.efilas=listaencabezado()
         self.ecolumnas=listaencabezado()
+    
+    def buscar9(self,carnet,hora,fecha):
+        ecolumna=self.ecolumnas.primero
+        while ecolumna !=None:
+            actual=ecolumna.acceso
+            while actual !=None:
+                if actual.fecha==fecha and actual.hora==hora and actual.carnet==carnet:
+                    ho=" Carnet:"+actual.carnet+ "\n Fecha:"+actual.fecha+ "\n hora:"+actual.hora
+                    return ho
+                actual=actual.abajo
+            ecolumna=ecolumna.siguiente 
+
     def insertar(self,carnet,nombre,descripcion,materia,fecha,hora,estado):
         
         global ff
@@ -883,7 +895,7 @@ class avl:
     
     def _search2(self, value, cur_node):
         if value == cur_node.value:
-            ho=" Carnet:"+cur_node.value+ "\n Nombre:"+cur_node.nombre+ "\n Carrera:"+cur_node.carrera+ "\n DPI:"+cur_node.dpi+ "\n Correo:"+cur_node.correo+ "\n Password:"+cur_node.Password+ "\n Creditos:"+cur_node.creditos+ "\n Edad:"+cur_node.edad
+            ho=" Carnet:"+cur_node.value+ "\n Nombre:"+cur_node.nombre+ "\n Carrera:"+cur_node.carrera+ "\n DPI:"+cur_node.dpi+ "\n Correo:"+cur_node.correo+ "\n Password:"+cur_node.Password+ "\n Creditos:"+str(cur_node.Creditos)+ "\n Edad:"+str(cur_node.edad)
            # ho=" Carnet:"+cur_node.value+ "\n Nombre:"+cur_node.nombre+ "\n Carrera:"+cur_node.carrera+ "\n DPI:"+cur_node.dpi
             return ho
         elif value<cur_node.value and cur_node.left_child!=None:

@@ -17,6 +17,7 @@ from analizador.Syntactic import parser
 from analizador.Syntactic import user_list, task_list
 from stru.list import av
 from stru.list import matiz
+from stru.list import recordatorio
 app= Flask(__name__)
 CORS(app, resources={r"/*": {"origin": "*"}})
 
@@ -49,8 +50,8 @@ def getentrada():
             
         elif(nombre=="curso"):
             for p in aList['Cursos']:
-                codigo=['Codigo']
-                name=['Nombre']
+                codigo=p['Codigo']
+                name=p['Nombre']
                 credito=str(p['Creditos'])
                 pre=str(p['Prerequisitos'])
                 obligatorio=str(p['Obligatorio'])
@@ -112,14 +113,14 @@ def getestudiante():
     if request.method=="POST":
         jsonStr= request.data.decode('utf-8')
         aList = json.loads(jsonStr)
-        carnet=['carnet']
-        DPI=['DPI']
-        nombre=str['nombre']
-        carrera=str['carrera']
-        correo=['correo']
-        password=['password']
-        creditos=str(['creditos'])
-        edad=str(['edad'])
+        carnet=aList['carnet']
+        DPI=aList['DPI']
+        nombre=aList['nombre']
+        carrera=aList['carrera']
+        correo=aList['correo']
+        password=aList['password']
+        creditos=str(aList['creditos'])
+        edad=str(aList['edad'])
 
         user_list.insertValue(carnet,DPI,nombre,carrera,password,creditos,edad,correo,"","","","","","user")
         av.insert(carnet,nombre,carrera,DPI)
@@ -129,21 +130,21 @@ def getestudiante():
         jsonStr= request.data.decode('utf-8')
         
         aList = json.loads(jsonStr)
-        carnet=['carnet']
+        carnet=aList['carnet']
         av.delete_value(carnet)
         hola="Hecho"
         return Response(hola,content_type='application/x-www-form-urlencoded')
     elif(request.method=="PUT"):
         jsonStr= request.data.decode('utf-8')
         aList = json.loads(jsonStr)
-        carnet=['carnet']
-        DPI=['DPI']
-        nombre=str['nombre']
-        carrera=str['carrera']
-        correo=['correo']
-        password=['password']
-        creditos=str(['creditos'])
-        edad=str(['edad'])
+        carnet=aList['carnet']
+        DPI=aList['DPI']
+        nombre=aList['nombre']
+        carrera=aList['carrera']
+        correo=aList['correo']
+        password=aList['password']
+        creditos=str(aList['creditos'])
+        edad=str(aList['edad'])
         av.search(carnet,DPI,nombre,carrera,password,creditos,edad,correo)
         hola="Hecho"
         return Response(hola,content_type='application/x-www-form-urlencoded')
@@ -151,9 +152,63 @@ def getestudiante():
         jsonStr= request.data.decode('utf-8')
         
         aList = json.loads(jsonStr)
-        carnet=['carnet']
-        av.search2(carnet)
-    
+        carnet=aList['carnet']
+        hola=av.search2(carnet)
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+
+@app.route('/recordatorios', methods=['POST','GET','DELETE','PUT'])
+def getrecordatorios():
+    hola=""
+    if request.method=="POST":
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=aList['carnet']
+        hola="Creado"
+        nombre=aList['nombre']
+        Descripcion=aList['Descripcion']
+        Materia=aList['Materia']
+        Fecha=str(aList['Fecha'])
+        Hora=str(aList['Hora'])
+        Estado=aList['Estado']
+        recordatorio.insertar(carnet,nombre,Descripcion,Materia,Fecha,Hora,Estado)
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif request.method=="PUT":
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=aList['carnet']
+        hola="Creado"
+        nombre=aList['nombre']
+        Descripcion=aList['Descripcion']
+        Materia=aList['Materia']
+        Fecha=str(aList['Fecha'])
+        Hora=str(aList['Hora'])
+        Estado=aList['Estado']
+        recordatorio.insertar(carnet,nombre,Descripcion,Materia,Fecha,Hora,Estado)
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif request.method=="GET":
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=aList['carnet']
+        
+        Fecha=str(aList['Fecha'])
+        Hora=str(aList['Hora'])
+        
+        hola=recordatorio.buscar9(carnet,Hora,Fecha)
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+    elif request.method=="DELETE":
+        jsonStr= request.data.decode('utf-8')
+        aList = json.loads(jsonStr)
+        carnet=aList['carnet']
+        
+        Fecha=str(aList['Fecha'])
+        Hora=str(aList['Hora'])
+        
+        hola=recordatorio.buscar9(carnet,Hora,Fecha)
+        return Response(hola,content_type='application/x-www-form-urlencoded')
+        
+        
+
+ 
 
 
 
